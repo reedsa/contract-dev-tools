@@ -1,132 +1,58 @@
 import { Address } from "@/types/accounts.types";
-import { useState } from "react";
 import { useRequest } from "./useRequest";
+import { Account as AccountType } from "@/types/accounts.types";
 
 const useAccounts = () => {
   const { state: requestState, apiRequest } = useRequest();
 
-  const [isAddingAccount, setIsAddingAccount] = useState(false);
-  const [addAccountError, setAddAccountError] = useState<string>("");
-  const [showAccountAddedSuccess, setShowAccountAddedSuccess] =
-    useState<boolean>(false);
-  const [newAccountAddress, setNewAccountAddress] = useState<Address>("");
-
-  const [showTransferSuccess, setShowTransferSuccess] =
-    useState<boolean>(false);
-  const [showTransferError, setShowTransferError] = useState<boolean>(false);
-
-  const addAccount = async () => {
-    await apiRequest(async () => {
-      setIsAddingAccount(true);
-      setAddAccountError("");
-      setNewAccountAddress("");
-      setShowAccountAddedSuccess(false);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              is_default: false,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to add account");
+  const createAccount = async () => {
+    return await apiRequest<AccountType>(async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            is_default: false,
+          }),
         }
+      );
 
-        const account = await response.json();
-
-        setAccounts([...accounts, account]);
-
-        setNewAccountAddress(account.address);
-        setShowAccountAddedSuccess(true);
-        setTimeout(() => {
-          setShowAccountAddedSuccess(false);
-        }, 3000);
-      } catch (error: any) {
-        setAddAccountError(`${error} Please check the address and try again.`);
-      } finally {
-        setIsAddingAccount(false);
+      if (!response.ok) {
+        throw new Error("Failed to add account");
       }
+
+      const account = (await response.json()) as AccountType;
+
+      return account;
     });
   };
 
   const resetAccountBalance = async (address: Address) => {
-    await apiRequest(async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/${address}/reset`,
-          {
-            method: "PUT",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to reset account balance");
+    return await apiRequest<AccountType>(async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/${address}/reset`,
+        {
+          method: "PUT",
         }
+      );
 
-        const account = await response.json();
-
-        return fetchAccounts();
-      } catch (error: any) {
-        throw new Error(`Error: ${error}`);
+      if (!response.ok) {
+        throw new Error("Failed to reset account balance");
       }
-    });
-  };
 
-  const transfer = async (from: Address, to: Address, amount: number) => {
-    setShowTransferSuccess(false);
-    setShowTransferError(false);
-    await apiRequest(async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/transactions/transfer`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              from,
-              to,
-              amount,
-            }),
-          }
-        );
+      const account = (await response.json()) as AccountType;
 
-        if (!response.ok) {
-          throw new Error("Failed to transfer");
-        }
-
-        const transaction = await response.json();
-        setShowTransferSuccess(true);
-        setTimeout(() => {
-          setShowTransferSuccess(false);
-        }, 3000);
-
-        return fetchAccounts();
-      } catch (error: any) {
-        setShowTransferError(true);
-      }
+      return account;
     });
   };
 
   return {
     requestState,
-    addAccount,
-    showAccountAddedSuccess,
-    isAddingAccount,
-    addAccountError,
-    newAccountAddress,
+    createAccount,
     resetAccountBalance,
-    transfer,
-    showTransferSuccess,
-    showTransferError,
   };
 };
 

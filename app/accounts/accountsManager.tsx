@@ -1,45 +1,93 @@
 "use client";
 
 import { useState } from "react";
-import { ZERO_ADDRESS } from "@/constants/constants";
 import useDefaultAccount from "@/hooks/useDefaultAccount";
 import { Account as AccountType } from "@/types/accounts.types";
 import { AccountsContext } from "../context/accountsContext";
 import AccountsList from "./accountsList";
+import useAccounts from "@/hooks/useAccounts";
+import AccountsHeader from "./accountsHeader";
+import { useToast } from "../context/toastContext";
+import { shortenAddress } from "@/lib/utils";
 
 export default function AccountsManager({
-  accounts,
+  accounts: initialAccounts,
 }: {
   accounts: AccountType[];
 }) {
+  const [accounts, setAccounts] = useState<AccountType[]>(initialAccounts);
   const initialDefaultAccount = accounts.find(
     (account) => account.default
   )?.address;
   const [defaultAccount, setDefaultAccount] = useState<string>(
-    initialDefaultAccount || ZERO_ADDRESS
+    initialDefaultAccount || ""
   );
 
-  const { saveDefaultAccount, requestState } = useDefaultAccount();
+  const { updateDefaultAccount, requestState: defaultAccountRequestState } =
+    useDefaultAccount();
+  const { createAccount, requestState: addAccountRequestState } = useAccounts();
+  const { showToast } = useToast();
 
-  const updateDefaultAccount = (address: string) => {
+  const changeDefaultAccount = async (address: string) => {
+    if (address === defaultAccount || address === "") {
+      return;
+    }
+
     const previousDefaultAccount = defaultAccount;
     setDefaultAccount(address);
 
     try {
-      if (requestState.loading) {
+      if (defaultAccountRequestState.loading) {
         return;
       }
 
-      saveDefaultAccount(address);
+      try {
+        const updatedAccount = await updateDefaultAccount(address);
+
+        if (updatedAccount) {
+          const updatedAccounts = accounts.map((account) =>
+            account.address === updatedAccount.address
+              ? updatedAccount
+              : account
+          );
+          setAccounts(updatedAccounts);
+          showToast({
+            title: "Default account updated",
+            description: `Default account updated to ${shortenAddress(
+              updatedAccount.address
+            )}`,
+            variant: "default",
+          });
+        }
+      } catch (error) {
+        setDefaultAccount(previousDefaultAccount);
+      }
     } catch (error) {
       setDefaultAccount(previousDefaultAccount);
-      console.error(error);
+    }
+  };
+
+  const addAccount = async () => {
+    const newAccount = await createAccount();
+
+    if (newAccount) {
+      setAccounts([...accounts, newAccount]);
+      showToast({
+        title: "Account added",
+        description: `Account ${shortenAddress(newAccount.address)} added`,
+        variant: "default",
+      });
     }
   };
 
   return (
-    <AccountsContext.Provider value={{ defaultAccount, updateDefaultAccount }}>
-      <AccountsList accounts={accounts} />
+    <AccountsContext.Provider
+      value={{ defaultAccount, changeDefaultAccount, addAccount }}
+    >
+      <AccountsHeader />
+      <div className="grid gap-4">
+        <AccountsList accounts={accounts} />
+      </div>
     </AccountsContext.Provider>
   );
 }

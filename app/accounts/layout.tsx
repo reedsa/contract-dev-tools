@@ -1,7 +1,6 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { TransferModalProvider } from "@/app/context/transferModalContext";
 import { TransferFormProvider } from "@/app/context/transferFormContext";
-import AccountsHeader from "./accountsHeader";
 
 export default function AccountsLayout({
   children,
@@ -11,9 +10,8 @@ export default function AccountsLayout({
   return (
     <TransferModalProvider>
       <TransferFormProvider>
-        <Card>
-          <AccountsHeader />
-          {children}
+        <Card className="min-w-2xl">
+          <CardContent>{children}</CardContent>
         </Card>
       </TransferFormProvider>
     </TransferModalProvider>

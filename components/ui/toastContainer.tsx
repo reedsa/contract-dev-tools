@@ -21,11 +21,13 @@ export const ToastContainer = () => {
           variant={toast.variant}
           onOpenChange={() => dismissToast(toast.id)}
         >
-          {toast.title && <ToastTitle>{toast.title}</ToastTitle>}
-          {toast.description && (
-            <ToastDescription>{toast.description}</ToastDescription>
-          )}
-          <ToastClose />
+          <div className="flex flex-col gap-2">
+            {toast.title && <ToastTitle>{toast.title}</ToastTitle>}
+            {toast.description && (
+              <ToastDescription>{toast.description}</ToastDescription>
+            )}
+            <ToastClose />
+          </div>
         </Toast>
       ))}
       <ToastViewport />

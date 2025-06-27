@@ -1,42 +1,40 @@
 import { useRequest } from "./useRequest";
-import { ZERO_ADDRESS } from "@/constants/constants";
+import { Account as AccountType } from "@/types/accounts.types";
 
-const useAccount = () => {
+const useDefaultAccount = () => {
   const { state: requestState, apiRequest } = useRequest();
 
-  const saveDefaultAccount = async (defaultAccount: string) => {
-    if (defaultAccount === ZERO_ADDRESS) {
-      return;
+  const updateDefaultAccount = async (
+    defaultAccount: string
+  ): Promise<AccountType> => {
+    if (defaultAccount === "") {
+      throw new Error("You must select an account as the default account");
     }
-    await apiRequest(async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              address: defaultAccount,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to update default account");
+    return await apiRequest<AccountType>(async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            address: defaultAccount,
+          }),
         }
-        const response_json = await response.json();
-      } catch (error: any) {
-        throw new Error(`Error: ${error}`);
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update default account");
       }
+      return (await response.json()) as AccountType;
     });
   };
 
   return {
     requestState,
-    saveDefaultAccount,
+    updateDefaultAccount,
   };
 };
 
-export default useAccount;
+export default useDefaultAccount;

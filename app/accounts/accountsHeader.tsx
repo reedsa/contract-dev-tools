@@ -4,7 +4,7 @@ import TransferButton from "./transferButton";
 
 export default function AccountsHeader() {
   return (
-    <div className="flex flex-col p-6 pb-3 space-y-3">
+    <div className="flex flex-col pt-6 pb-6 space-y-3">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-col">
           <CardTitle>Accounts</CardTitle>

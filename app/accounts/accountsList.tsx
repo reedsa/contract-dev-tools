@@ -11,7 +11,7 @@ export default function AccountsList({
 }: {
   accounts: AccountType[];
 }) {
-  const { defaultAccount, updateDefaultAccount } = useAccountsContext();
+  const { defaultAccount, changeDefaultAccount } = useAccountsContext();
 
   const { resetAccountBalance } = useAccounts();
 
@@ -23,7 +23,7 @@ export default function AccountsList({
           key={account.address}
           account={account}
           defaultAccount={defaultAccount}
-          updateDefaultAccount={updateDefaultAccount}
+          changeDefaultAccount={changeDefaultAccount}
           resetAccountBalance={resetAccountBalance}
         />
       ))}
