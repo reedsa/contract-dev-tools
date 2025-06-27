@@ -91,7 +91,7 @@ export const TransferModal = () => {
               <span>ETH</span>
             </div>
           </div>
-          <div className="flex flex-row justify-end gap-2">
+          <div className="flex flex-row justify-end mt-4 gap-2">
             <Button
               variant="outline"
               onClick={() => toggleTransferModalVisibility()}
@@ -100,7 +100,7 @@ export const TransferModal = () => {
               Cancel
             </Button>
             <Button
-              className="bg-blue-600 text-white"
+              theme="blue"
               type="submit"
               title="Submit transfer"
               disabled={isLoading}

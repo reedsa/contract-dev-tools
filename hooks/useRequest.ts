@@ -57,7 +57,7 @@ export function useRequest() {
         return data;
       } catch (error: any) {
         dispatch({ type: "FAILURE", payload: error.message });
-        return error;
+        throw error;
       }
     },
     [dispatch]
