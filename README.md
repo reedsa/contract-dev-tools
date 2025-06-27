@@ -2,5 +2,5 @@
 
 This app is a prototype for contract development and provides interactive function calls and  event logs.
 
-This app requires the blockchain-explorer-api and a local node or RPC provider.
+This app requires the [blockchain-explorer-api](https://github.com/reedsa/blockchain-explorer-api) and a local node or RPC provider.
 
