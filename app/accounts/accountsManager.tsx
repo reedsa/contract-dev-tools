@@ -68,14 +68,21 @@ export default function AccountsManager({
   };
 
   const addAccount = async () => {
-    const newAccount = await createAccount();
-
-    if (newAccount) {
-      setAccounts([...accounts, newAccount]);
+    try {
+      const newAccount = await createAccount();
+      if (newAccount) {
+        setAccounts([...accounts, newAccount]);
+        showToast({
+          title: "Account added",
+          description: `Account ${shortenAddress(newAccount.address)} added`,
+          variant: "default",
+        });
+      }
+    } catch (error: any) {
       showToast({
-        title: "Account added",
-        description: `Account ${shortenAddress(newAccount.address)} added`,
-        variant: "default",
+        title: "Failed to add account",
+        description: error.message,
+        variant: "destructive",
       });
     }
   };

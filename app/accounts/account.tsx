@@ -2,7 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@radix-ui/themes";
-import { ArrowLeftRight, RotateCcw, CopyIcon, User } from "lucide-react";
+import {
+  ArrowLeftRight,
+  RotateCcw,
+  CopyIcon,
+  User,
+  LockOpenIcon,
+} from "lucide-react";
 import { Account as AccountType } from "@/types/accounts.types";
 import { useTransferModalContext } from "../context/transferModalContext";
 import { useTransferFormContext } from "../context/transferFormContext";
@@ -22,13 +28,16 @@ export default function Account({
   const { initializeForm } = useTransferFormContext();
 
   return (
-    <div className="flex items-center gap-4 rounded-lg border p-3 bg-blue-500/5">
+    <div className="flex items-center gap-4 rounded-lg border p-3 bg-background/30">
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
         <User className="h-5 w-5 text-primary" />
       </div>
       <div className="flex-1">
         <div className="flex flex-row items-center gap-2">
           <p className="text-sm font-medium">{account.address}</p>
+          {account["unlocked"] && (
+            <LockOpenIcon className="h-3 w-3 text-muted-foreground" />
+          )}
           <CopyIcon
             className="h-3 w-3 text-muted-foreground cursor-pointer"
             onClick={() => {

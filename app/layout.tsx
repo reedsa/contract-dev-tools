@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         <Theme>
           <ToastProvider>
-            <header className="sticky top-0 z-50 w-full border-b bg-background/75">
+            <header className="sticky top-0 z-50 w-full border-b bg-foreground/90">
               <div className="container flex h-14 items-center p-4">
                 <div className="flex flex-row items-center space-x-4 text-white font-bold">
                   <Link href="/">Contract Dev Tools</Link>
@@ -42,7 +42,7 @@ export default function RootLayout({
                 </div>
               </div>
             </header>
-            <div className="flex flex-col">
+            <div className="flex flex-col bg-background/20">
               <div className="flex flex-col mt-10 mb-10 mr-20 ml-20">
                 {children}
               </div>
