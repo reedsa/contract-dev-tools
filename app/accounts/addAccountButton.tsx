@@ -2,10 +2,10 @@
 
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import useAccounts from "@/hooks/useAccounts";
+import { useAccountsContext } from "../context/accountsContext";
 
 export default function AddAccountButton() {
-  const { addAccount } = useAccounts();
+  const { addAccount } = useAccountsContext();
 
   return (
     <Button

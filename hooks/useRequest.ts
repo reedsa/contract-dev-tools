@@ -48,14 +48,16 @@ export function useRequest() {
   const [state, dispatch] = useReducer(requestReducer, initialState);
 
   const apiRequest = useCallback(
-    async (callback: RequestCallback) => {
+    async <T>(callback: RequestCallback): Promise<T> => {
       dispatch({ type: "REQUEST" });
 
       try {
         const data = await callback();
         dispatch({ type: "SUCCESS", payload: data });
+        return data;
       } catch (error: any) {
         dispatch({ type: "FAILURE", payload: error.message });
+        return error;
       }
     },
     [dispatch]

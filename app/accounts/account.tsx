@@ -11,18 +11,18 @@ export default function Account({
   account,
   resetAccountBalance,
   defaultAccount,
-  updateDefaultAccount,
+  changeDefaultAccount,
 }: {
   account: AccountType;
   resetAccountBalance: (address: string) => void;
   defaultAccount: string;
-  updateDefaultAccount: (address: string) => void;
+  changeDefaultAccount: (address: string) => void;
 }) {
   const { toggleTransferModalVisibility } = useTransferModalContext();
   const { initializeForm } = useTransferFormContext();
 
   return (
-    <div className="flex items-center gap-4 rounded-lg border p-3">
+    <div className="flex items-center gap-4 rounded-lg border p-3 bg-blue-500/5">
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
         <User className="h-5 w-5 text-primary" />
       </div>
@@ -84,7 +84,7 @@ export default function Account({
             // size="1"
             checked={defaultAccount === account.address}
             onCheckedChange={() => {
-              updateDefaultAccount(account.address);
+              changeDefaultAccount(account.address);
             }}
           />
         </div>

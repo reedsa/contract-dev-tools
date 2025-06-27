@@ -2,7 +2,8 @@ import { createContext, useContext } from "react";
 
 interface AccountsContextType {
   defaultAccount: string;
-  updateDefaultAccount: (address: string) => void;
+  changeDefaultAccount: (address: string) => void;
+  addAccount: () => void;
 }
 
 export const AccountsContext = createContext<AccountsContextType | undefined>(
