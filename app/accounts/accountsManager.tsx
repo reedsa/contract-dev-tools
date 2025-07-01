@@ -92,9 +92,7 @@ export default function AccountsManager({
       value={{ defaultAccount, changeDefaultAccount, addAccount }}
     >
       <AccountsHeader />
-      <div className="grid gap-4">
-        <AccountsList accounts={accounts} />
-      </div>
+      <AccountsList accounts={accounts} />
     </AccountsContext.Provider>
   );
 }

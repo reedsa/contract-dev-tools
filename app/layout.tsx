@@ -39,10 +39,12 @@ export default function RootLayout({
                 <div className="flex flex-row items-center space-x-4 text-white font-bold">
                   <Link href="/">Contract Dev Tools</Link>
                   <Link href="/accounts">Accounts</Link>
+                  <Link href="/blocks">Blocks</Link>
+                  <Link href="/contracts">Contracts</Link>
                 </div>
               </div>
             </header>
-            <div className="flex flex-col bg-background/20">
+            <div className="flex flex-col min-h-screen bg-background/20">
               <div className="flex flex-col mt-10 mb-10 mr-20 ml-20">
                 {children}
               </div>

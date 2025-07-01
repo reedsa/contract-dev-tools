@@ -8,6 +8,7 @@ import { useState, useCallback } from "react";
 interface SubmitResult {
   success: boolean;
   message?: string;
+  response?: any; // The response data from the API if the submission was successful.
 }
 
 /**
@@ -62,12 +63,12 @@ export function useSubmitForm(apiEndpoint: string): UseSubmitFormReturn {
             .catch(() => ({ message: "An unknown error occurred." }));
           // Throw an error to be caught by the `catch` block below.
           throw new Error(
-            errorData.message || `Request failed with status ${response.status}`
+            errorData.error || `Request failed with status ${response.status}`
           );
         }
 
         // 4. If the submission was successful, return a success result.
-        return { success: true };
+        return { success: true, response: await response.json() };
       } catch (err: any) {
         // 5. If any error occurred (network failure or thrown error from above), update the error state.
         setError(err.message);
