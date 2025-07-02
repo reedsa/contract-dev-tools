@@ -1,15 +1,9 @@
-import ContractsList from "./contractsList";
 import { Contract } from "@/types/contracts.types";
-import ContractsHeader from "./contractsHeader";
+import ContractsManager from "./contractsManager";
 
 export default async function ContractsPage() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/contracts/`);
-  const initialContracts: Contract[] = await res.json();
+  const contracts: Contract[] = await res.json();
 
-  return (
-    <>
-      <ContractsHeader />
-      <ContractsList contracts={initialContracts} />
-    </>
-  );
+  return <ContractsManager contracts={contracts} />;
 }

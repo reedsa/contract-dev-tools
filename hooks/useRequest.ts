@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useReducer } from "react";
 
 export interface RequestState {

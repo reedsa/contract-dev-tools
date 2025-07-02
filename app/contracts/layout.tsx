@@ -9,11 +9,7 @@ export default function ContractsLayout({
 }) {
   return (
     <ImportContractModalProvider>
-      <ImportContractFormProvider>
-        <Card className="min-w-2xl">
-          <CardContent>{children}</CardContent>
-        </Card>
-      </ImportContractFormProvider>
+      <ImportContractFormProvider>{children}</ImportContractFormProvider>
     </ImportContractModalProvider>
   );
 }

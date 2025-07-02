@@ -3,14 +3,10 @@
 import useAccounts from "@/hooks/useAccounts";
 import Account from "./account";
 import { TransferModal } from "@/components/web3/transferModal";
-import { Account as AccountType } from "@/types/accounts.types";
 import { useAccountsContext } from "../context/accountsContext";
 
-export default function AccountsList({
-  accounts,
-}: {
-  accounts: AccountType[];
-}) {
+export default function AccountsList() {
+  const { accounts } = useAccountsContext();
   const { defaultAccount, changeDefaultAccount } = useAccountsContext();
 
   const { resetAccountBalance } = useAccounts();

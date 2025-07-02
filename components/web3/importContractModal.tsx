@@ -39,7 +39,7 @@ export const ImportContractModal = ({
       const fileData = file.files[0];
       const fileContent = await fileData.text();
       const json = JSON.parse(fileContent);
-      setFormField("abi", JSON.stringify(json.abi));
+      setFormField("abi", json.abi);
       setFormField("bytecode", json.bytecode);
     }
   };
@@ -50,7 +50,6 @@ export const ImportContractModal = ({
     const data = Object.fromEntries(formData.entries());
 
     const result = await submit(data);
-    console.log("Import result:", result.response);
 
     if (result.success) {
       setContracts([...contracts, result.response]);
@@ -79,7 +78,11 @@ export const ImportContractModal = ({
         </DialogDescription>
         <form onSubmit={handleSubmit}>
           {error && <p className="text-red-500">{error}</p>}
-          <input type="hidden" name="abi" value={abi || ""} />
+          <input
+            type="hidden"
+            name="abi"
+            value={abi ? JSON.stringify(abi) : ""}
+          />
           <input type="hidden" name="bytecode" value={bytecode || ""} />
           <div className="flex flex-col gap-4">
             <label htmlFor="to">Contract File</label>
