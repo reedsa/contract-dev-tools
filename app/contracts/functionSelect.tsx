@@ -12,16 +12,21 @@ interface FunctionSelectOption {
 }
 
 const FunctionSelect = ({
+  name,
   functions,
-  selectedFunctionSignature,
+  functionSignature,
   handleFunctionSelected,
 }: {
+  name: string;
   functions: FunctionSelectOption[];
-  selectedFunctionSignature: string;
+  functionSignature: string;
   handleFunctionSelected: (value: string) => void;
 }) => {
   return (
-    <Select onValueChange={(value) => handleFunctionSelected(value)}>
+    <Select
+      name={name}
+      onValueChange={(value) => handleFunctionSelected(value)}
+    >
       <SelectTrigger id="function-select">
         <SelectValue placeholder="Select function" />
       </SelectTrigger>

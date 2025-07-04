@@ -1,5 +1,6 @@
 "use client"; // This hook uses client-side state, so it must be in a client component file.
 
+import { toSnakeCase } from "@/lib/utils";
 import { useState, useCallback } from "react";
 
 /**
@@ -15,7 +16,7 @@ interface SubmitResult {
  * Defines the structure of the object returned by the hook itself.
  */
 interface UseSubmitFormReturn {
-  submit: (formData: any) => Promise<SubmitResult>; // The function to call to trigger submission.
+  submit: (formData: any, path: string) => Promise<SubmitResult>; // The function to call to trigger submission.
   isLoading: boolean; // A boolean to indicate if the submission is in progress.
   error: string | null; // A string to hold any error message.
 }
@@ -40,19 +41,27 @@ export function useSubmitForm(apiEndpoint: string): UseSubmitFormReturn {
    * It accepts the form data, sends it to the specified API endpoint, and manages state.
    */
   const submit = useCallback(
-    async (formData: any): Promise<SubmitResult> => {
+    async (formData: any, path: string = ""): Promise<SubmitResult> => {
       // 1. Reset state before starting a new submission.
       setIsLoading(true);
       setError(null);
 
+      // Process form data to trim string values and convert keys to snake_case
+      const normalizedFormData = Object.fromEntries(
+        Object.entries(formData).map(([key, value]) => [
+          toSnakeCase(key),
+          typeof value === "string" ? value.trim() : value,
+        ])
+      );
+
       try {
         // 2. Make the API request using the native `fetch` API.
-        const response = await fetch(apiEndpoint, {
+        const response = await fetch(`${apiEndpoint}${path}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(normalizedFormData),
         });
 
         // 3. Check if the HTTP response status is not successful (e.g., 400, 404, 500).

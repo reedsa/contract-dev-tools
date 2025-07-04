@@ -19,6 +19,11 @@ export default function ContractsList({
           contracts={contracts}
           setContracts={setContracts}
         />
+        {contracts.length === 0 && (
+          <div className="text-gray-500">
+            No contracts found. Please import a contract to get started.
+          </div>
+        )}
         {contracts.length > 0 &&
           contracts.map((contract) => (
             <Contract key={contract.address} contract={contract} />
