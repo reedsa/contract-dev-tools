@@ -17,8 +17,9 @@ export interface Event {
 }
 
 export interface Contract {
+  name?: string;
   address: string;
   balance: number;
-  transaction_count: number;
+  tx_count: number;
   abi: Function[] | Event[];
 }

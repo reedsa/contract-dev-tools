@@ -19,12 +19,12 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       theme: {
-        blue: "bg-blue-100 text-blue-900 border-1 border-blue-200 hover:bg-blue-200 text-blue-600 hover:text-blue-900",
+        blue: "bg-blue-100 text-blue-900 border-1 border-blue-500 hover:bg-blue-200 text-blue-600 hover:text-blue-900",
         green:
-          "bg-green-100 text-green-900 border-2 border-green-200 hover:bg-green-200 text-green-600 hover:text-green-900",
+          "bg-green-100 text-green-900 border-2 border-green-500 hover:bg-green-200 text-green-600 hover:text-green-900",
         yellow:
-          "bg-yellow-100 text-yellow-900 border-2 border-yellow-200 hover:bg-yellow-200 text-yellow-600 hover:text-yellow-900",
-        red: "bg-red-100 text-red-900 border-2 border-red-200 hover:bg-red-200 text-red-600 hover:text-red-900",
+          "bg-yellow-100 text-yellow-900 border-2 border-yellow-500 hover:bg-yellow-200 text-yellow-600 hover:text-yellow-900",
+        red: "bg-red-100 text-red-900 border-2 border-red-500 hover:bg-red-200 text-red-600 hover:text-red-900",
       },
       shape: {
         default: "rounded-md",

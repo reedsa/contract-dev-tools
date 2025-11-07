@@ -30,8 +30,8 @@ const ExecutionPanel = () => {
 
   const defaultFormData = {
     functionSignature: "",
-    transactionArgsFrom: defaultAccount,
-    transactionArgsValue: "0.001",
+    "transactionArg[from]": defaultAccount,
+    "transactionArg[value]": "0.001",
   };
 
   const { showToast } = useToast();
@@ -106,6 +106,8 @@ const ExecutionPanel = () => {
       delete data["transactionArg[from]"];
       delete data["transactionArg[value]"];
 
+      console.log("Transaction Args:", transactionArgs);
+      console.log("Function Args:", args);
       result = await submit({ ...data, transactionArgs, args }, "/transact");
     } else {
       delete data["transactionArg[from]"];
@@ -147,7 +149,7 @@ const ExecutionPanel = () => {
     selectedFunction?.stateMutability === "payable";
 
   return (
-    <div className="flex flex-col pt-6 pb-6 space-y-3">
+    <div className="flex flex-col pt-6 space-y-3 min-w-lg">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-col">
           <CardTitle>Execute Functions</CardTitle>
@@ -173,8 +175,8 @@ const ExecutionPanel = () => {
               name="contractAddress"
               value={selectedContract.address}
             />
-            <div className="flex flex-col gap-4 justify-between">
-              <div className="space-y-2 w-full border p-4 rounded-lg bg-blue-50">
+            <div className="flex flex-col gap-2 w-full border justify-between p-4 rounded-lg bg-blue-50">
+              <div className="space-y-2">
                 <Label htmlFor="function-select" className="font-bold">
                   Function
                 </Label>
@@ -227,9 +229,10 @@ const ExecutionPanel = () => {
                             accounts={accounts}
                             defaultAccount={defaultAccount}
                             selectedAccount={
-                              typeof formData.transactionArgsFrom === "string"
-                                ? formData.transactionArgsFrom
-                                : defaultAccount
+                              typeof formData["transactionArg[from]"] ===
+                              "string"
+                                ? formData["transactionArg[from]"]
+                                : defaultFormData["transactionArg[from]"]
                             }
                             setSelectedAccount={(value) =>
                               setFormField("transactionArg[from]", value)
@@ -252,7 +255,7 @@ const ExecutionPanel = () => {
                                 type="number"
                                 id="transaction-args-value"
                                 placeholder={
-                                  defaultFormData.transactionArgsValue
+                                  defaultFormData["transactionArg[value]"]
                                 }
                                 step="0.0001"
                                 onChange={(e) =>
@@ -262,10 +265,10 @@ const ExecutionPanel = () => {
                                   )
                                 }
                                 value={
-                                  typeof formData.transactionArgsValue ===
+                                  typeof formData["transactionArg[value]"] ===
                                   "string"
-                                    ? formData.transactionArgsValue
-                                    : defaultFormData.transactionArgsValue
+                                    ? formData["transactionArg[value]"]
+                                    : defaultFormData["transactionArg[value]"]
                                 }
                                 className="input w-full"
                               />
@@ -296,7 +299,7 @@ const ExecutionPanel = () => {
                     </div>
                   )}
 
-                  <div>
+                  <div className="flex flex-row justify-end mt-4">
                     <Button
                       theme="blue"
                       type="submit"

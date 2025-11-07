@@ -1,6 +1,6 @@
 import { Contract as ContractType } from "@/types/contracts.types";
 import { useSelectedContract } from "../context/selectedContractContext";
-import { cn } from "@/lib/utils";
+import { cn, shortenAddress, weiToEth } from "@/lib/utils";
 
 export default function Contract({ contract }: { contract: ContractType }) {
   const { selectedContract, setSelectedContract } = useSelectedContract();
@@ -29,14 +29,17 @@ export default function Contract({ contract }: { contract: ContractType }) {
       onClick={() => setSelectedContract(contract)}
     >
       <div className="flex-1">
-        <div className="flex flex-row items-center gap-2">
-          <p className="text-xs font-medium">{contract.address}</p>
+        <div className="flex flex-col justify-between gap-2">
+          <p className="text-sm font-bold">
+            {contract.name || "Unnamed Contract"}
+          </p>
+          <p className="text-xs">{shortenAddress(contract.address)}</p>
         </div>
         <div className="flex flex-row items-center space-x-2">
-          <p className="text-xs font-medium">{contract.balance} ETH</p>
+          <p className="text-xs">{weiToEth(contract.balance)} ETH</p>
         </div>
         <p className="text-xs text-muted-foreground">
-          {contract.transaction_count} transactions
+          {contract.tx_count} transactions
         </p>
       </div>
     </div>

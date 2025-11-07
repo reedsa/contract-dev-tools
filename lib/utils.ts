@@ -47,7 +47,7 @@ export function ethToWei(eth: number | string): bigint {
  * @param wei - The amount in wei to convert (as a BigInt or string)
  * @returns The equivalent amount in ETH as a number
  */
-export function weiToEth(wei: bigint | string): number {
+export function weiToEth(wei: number | bigint | string): number {
   // Convert string to BigInt if needed
   const weiAmount = typeof wei === "string" ? BigInt(wei) : wei;
 
